@@ -1,15 +1,20 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-int const SIZE = 3;
-int nums[SIZE];
-int pos = 0;
-
 void PrintMenu();
-void AddNumber(int num);
-int Calculate();
-void Clear();
+void CaptureItem();
+float Calculate();
+void PrintList();
+
+class Item {
+    float price;
+    string name;
+    int qty;
+};
+
+vector<Item> Items;
 
 int main()
 {
@@ -22,7 +27,6 @@ int main()
         // capture choice
         int choice = -1;
         cin >> choice;
-        int num;
 
         switch (choice) {
         case 0:
@@ -30,16 +34,18 @@ int main()
             cout << "Exiting...\n";
             break;
         case 1:
-            cout << "What number would you like to add? ";
-            cin >> num;
-            AddNumber(num);
+            CaptureItem();
             break;
         case 2:
             cout << "The total is: " << Calculate() << "\n";
             break;
+        case 3:
+            cout << "The list of numbers:\n";
+            PrintList();
+            break;
         case 9:
             cout << "Clearing the array...\n";
-            Clear();
+            Items.clear();
             break;
         default:
             cout << "Invalid choice, please try again.\n";
@@ -50,42 +56,50 @@ int main()
 
 void PrintMenu() {
     cout << "----- Main Menu -----\n";
-    cout << "1. Add Number\n";
+    cout << "1. Add Item\n";
     cout << "2. Calculate\n";
+    cout << "3. Print List\n";
     cout << "9. Clear the Array\n";
     cout << "0. Exit\n";
     cout << "\nWhat would you like to do? ";
 }
 
-void AddNumber(int num)
+void CaptureItem()
 {
-    if (pos >= SIZE) {
-        cout << "The array is full, please clear it.\n";
-        return;
-    }
+    string name;
+    float price;
+    int qty;
 
-    cout << "Adding the number: " << num << "\n";
-    nums[pos] = num;
-    pos++;
+    cout << "What item would you like to add? ";
+    cin >> name;
+    cout << "What is the price? ";
+    cin >> price;
+    cout << "How many would you like? ";
+    cin >> qty;
+
+    Item item = { price, name, qty };
+
+    Items.push_back(item);
 }
 
-int Calculate()
+float Calculate()
 {
-    int total = 0;
+    float total = 0;
 
-    for (int i = 0; i < SIZE; i++) {
-        total += nums[i];
+    for (Item item : Items) {
+        total += item.price * item.qty;
     }
 
     return total;
 }
 
-void Clear()
+void PrintList()
 {
-    // loop through the array
-        // set that element to 0
-    for (int i = 0; i < SIZE; i++) {
-        nums[i] = 0;
+    for (int i = 0; i < Items.size(); i++) {
+        cout << i + 1;
+        cout << ":\t" << Items[i].qty << "x " << Items[i].name;
+        cout << "\t" << Items[i].qty * Items[i].price;
+        cout << "\n";
     }
-    pos = 0;
+
 }
