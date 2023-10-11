@@ -8,7 +8,7 @@ void CaptureItem();
 float Calculate();
 void PrintList();
 
-class Item {
+struct Item {
     float price;
     string name;
     int qty;
